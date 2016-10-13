@@ -46,7 +46,7 @@ public class SwiftSpinner: UIView {
         titleLabel.textAlignment = .center
         titleLabel.lineBreakMode = .byWordWrapping
         titleLabel.adjustsFontSizeToFitWidth = true
-        titleLabel.textColor = UIColor.white
+        titleLabel.textColor = UIColor.black
         
         
         blurView.contentView.addSubview(titleLabel)
@@ -60,7 +60,7 @@ public class SwiftSpinner: UIView {
         outerCircle.strokeEnd = 0.45
         outerCircle.lineCap = kCALineCapRound
         outerCircle.fillColor = UIColor.clear.cgColor
-        outerCircle.strokeColor = UIColor.white.cgColor
+        outerCircle.strokeColor = UIColor(red: 154.0/255.0, green: 80.0/255.0, blue: 164.0/255.0, alpha: 1.0).cgColor
         outerCircleView.layer.addSublayer(outerCircle)
         
         outerCircle.strokeStart = 0.0
@@ -77,7 +77,7 @@ public class SwiftSpinner: UIView {
         innerCircle.strokeEnd = 0.9
         innerCircle.lineCap = kCALineCapRound
         innerCircle.fillColor = UIColor.clear.cgColor
-        innerCircle.strokeColor = UIColor.gray.cgColor
+        innerCircle.strokeColor = UIColor(red: 88.0/255.0, green: 86.0/255.0, blue: 157.0/255.0, alpha: 1.0).cgColor
         innerCircleView.layer.addSublayer(innerCircle)
         
         innerCircle.strokeStart = 0.0
@@ -359,7 +359,7 @@ public class SwiftSpinner: UIView {
     // layout elements
     //
     
-    private var blurEffectStyle: UIBlurEffectStyle = .dark
+    private var blurEffectStyle: UIBlurEffectStyle = .light
     private var blurEffect: UIBlurEffect!
     private var blurView: UIVisualEffectView!
     private var vibrancyView: UIVisualEffectView!

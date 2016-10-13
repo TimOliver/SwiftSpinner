@@ -33,7 +33,7 @@ public class SwiftSpinner: UIView {
         super.init(frame: frame)
         
         blurEffect = UIBlurEffect(style: blurEffectStyle)
-        blurView = UIVisualEffectView(effect: blurEffect)
+        blurView = UIVisualEffectView(effect: nil)
         addSubview(blurView)
         
         vibrancyView = UIVisualEffectView(effect: UIVibrancyEffect(blurEffect: blurEffect))
@@ -77,7 +77,7 @@ public class SwiftSpinner: UIView {
         innerCircle.strokeEnd = 0.9
         innerCircle.lineCap = kCALineCapRound
         innerCircle.fillColor = UIColor.clear.cgColor
-        innerCircle.strokeColor = UIColor(red: 88.0/255.0, green: 86.0/255.0, blue: 157.0/255.0, alpha: 1.0).cgColor
+        innerCircle.strokeColor = UIColor(red: 242.0/255.0, green: 81.0/255.0, blue: 145.0/255.0, alpha: 1.0).cgColor
         innerCircleView.layer.addSublayer(innerCircle)
         
         innerCircle.strokeStart = 0.0
@@ -121,8 +121,6 @@ public class SwiftSpinner: UIView {
         spinner.updateFrame()
         
         if spinner.superview == nil {
-            //show the spinner
-            spinner.alpha = 0.0
             
             guard let containerView = containerView() else {
                 fatalError("\n`UIApplication.keyWindow` is `nil`. If you're trying to show a spinner from your view controller's `viewDidLoad` method, do that from `viewWillAppear` instead. Alternatively use `useContainerView` to set a view where the spinner should show")
@@ -130,8 +128,21 @@ public class SwiftSpinner: UIView {
             
             containerView.addSubview(spinner)
             
-            UIView.animate(withDuration: 0.33, delay: 0.0, options: .curveEaseOut, animations: {
-                spinner.alpha = 1.0
+            //show the spinner
+            spinner.alpha = 1.0
+            
+            // Hide the front components
+            spinner.blurView.effect = nil
+            for view in spinner.blurView.contentView.subviews {
+                view.alpha = 0.0
+            }
+            
+            UIView.animate(withDuration: 0.53, delay: 0.0, options: .curveEaseOut, animations: {
+                for view in spinner.blurView.contentView.subviews {
+                    view.alpha = 1.0
+                }
+                
+                spinner.blurView.effect = spinner.blurEffect
                 }, completion: nil)
             
             #if os(iOS)
@@ -209,9 +220,21 @@ public class SwiftSpinner: UIView {
                 return
             }
             
+            
             UIView.animate(withDuration: 0.33, delay: 0.0, options: .curveEaseOut, animations: {
-                spinner.alpha = 0.0
+                
+                for view in spinner.blurView.contentView.subviews {
+                    view.alpha = 0.0
+                }
+                
+                spinner.blurView.effect = nil
+                
+                spinner
                 }, completion: {_ in
+                    for view in spinner.blurView.contentView.subviews {
+                        view.alpha = 1.0
+                    }
+                
                     spinner.alpha = 1.0
                     spinner.removeFromSuperview()
                     spinner.titleLabel.font = spinner.defaultTitleFont
